@@ -1,29 +1,27 @@
 import java.io.*;
-import java.util.Scanner;
 
 public class FileCalculator {
 
-    public MathOperations[] getFileContain(String fileName) throws IOException {
+    public MathOperation[] getFileContain(String fileName) throws IOException {
         int lines = countLines(fileName);
-        MathOperations[] mathOperations = new MathOperations[lines];
+        MathOperation[] mathOperation = new MathOperation[lines];
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        for (int i = 0; i < mathOperations.length; i++) {
+        for (int i = 0; i < mathOperation.length; i++) {
             String line = reader.readLine();
-            line.split(" ");
             String[] numbers = line.split(" ");
             int firstNumber = Integer.parseInt(numbers[0]);
             int secondNumber = Integer.parseInt(numbers[2]);
-            mathOperations[i] = new MathOperations(firstNumber, numbers[1], secondNumber);
+            mathOperation[i] = new MathOperation(firstNumber, numbers[1], secondNumber);
         }
-        return mathOperations;
+        return mathOperation;
     }
 
-    public double getOperationResult(double firstNumber, String operator, double secondNumber) {
-        return switch (operator) {
-            case "+" -> firstNumber + secondNumber;
-            case "-" -> firstNumber - secondNumber;
-            case "*" -> firstNumber * secondNumber;
-            default -> (firstNumber / secondNumber);
+    private double getOperationResult(MathOperation mathOperation) {
+        return switch (mathOperation.getOperator()) {
+            case "+" -> mathOperation.getFirstNumber() + mathOperation.getSecondNumber();
+            case "-" -> mathOperation.getFirstNumber() - mathOperation.getSecondNumber();
+            case "*" -> mathOperation.getFirstNumber() * mathOperation.getSecondNumber();
+            default -> (mathOperation.getFirstNumber() / mathOperation.getSecondNumber());
         };
     }
 
@@ -37,16 +35,21 @@ public class FileCalculator {
         return counter;
     }
 
-    private String getInfo(MathOperations mathOperations) {
-        return mathOperations.getFirstNumber() + " " + mathOperations.getOperator() + " " + mathOperations.getSecondNumber() +
-                " = " + getOperationResult(mathOperations.getFirstNumber(), mathOperations.getOperator(),
-                mathOperations.getSecondNumber());
+    public void printInfo(MathOperation[] mathOperation) {
+        for (MathOperation operation : mathOperation) {
+            System.out.println(operation + " = " + getOperationResult(operation));
+        }
     }
 
-    public void save(MathOperations[] mathOperations, String fileName) throws IOException {
+    private String getInfo(MathOperation mathOperation) {
+        return mathOperation.getFirstNumber() + " " + mathOperation.getOperator() + " " + mathOperation.getSecondNumber() +
+                " = " + getOperationResult(mathOperation);
+    }
+
+    public void save(MathOperation[] mathOperations, String fileName) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-        for (int i = 0; i < mathOperations.length; i++) {
-            writer.write(getInfo(mathOperations[i]));
+        for (MathOperation mathOperation : mathOperations) {
+            writer.write(getInfo(mathOperation));
             writer.newLine();
         }
         writer.close();

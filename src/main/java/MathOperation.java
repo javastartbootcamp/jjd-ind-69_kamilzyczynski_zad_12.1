@@ -1,9 +1,9 @@
-public class MathOperations {
+public class MathOperation {
     private double firstNumber;
     private double secondNumber;
     private String operator;
 
-    public MathOperations(double firstNumber, String operator, double secondNumber) {
+    public MathOperation(double firstNumber, String operator, double secondNumber) {
         this.firstNumber = firstNumber;
         this.operator = operator;
         this.secondNumber = secondNumber;
