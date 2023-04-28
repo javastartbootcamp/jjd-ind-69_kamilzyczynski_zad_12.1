@@ -9,8 +9,8 @@ public class FileCalculator {
         for (int i = 0; i < mathOperation.length; i++) {
             String line = reader.readLine();
             String[] numbers = line.split(" ");
-            int firstNumber = Integer.parseInt(numbers[0]);
-            int secondNumber = Integer.parseInt(numbers[2]);
+            double firstNumber = Double.parseDouble(numbers[0]);
+            double secondNumber = Double.parseDouble(numbers[2]);
             mathOperation[i] = new MathOperation(firstNumber, numbers[1], secondNumber);
         }
         return mathOperation;
